@@ -2,7 +2,7 @@
 # ЕТАП 1: Збірка (Builder)
 # ==========================================
 # Беремо образ з Maven та Java 17 (якщо в тебе Java 21 - зміни 17 на 21)
-FROM maven:3.9-eclipse-temurin-17 AS builder
+FROM maven:3.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
 # Копіюємо файл залежностей
@@ -19,7 +19,7 @@ RUN mvn clean package -DskipTests
 # ЕТАП 2: Запуск (Runner)
 # ==========================================
 # Беремо дуже легкий образ Alpine Linux тільки з JRE (без Maven)
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Створюємо папку для завантажених файлів
