@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  copycat-app:
+    build: .             # Кажемо шукати Dockerfile у цій же папці
+    container_name: copycat-container
+    ports:
+      - "8080:8080"      # Прокидаємо порт 8080 з контейнера на твій ПК
+    volumes:
+      - copycat-uploads:/app/uploads # Зберігаємо файли, щоб вони не зникли при рестарті
+    restart: unless-stopped
+
+volumes:
+  copycat-uploads:
