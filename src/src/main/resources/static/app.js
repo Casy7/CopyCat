@@ -10,7 +10,7 @@ async function createRoom() {
         // Робимо POST запит на наш бекенд
         const response = await fetch('/api/v1/rooms', { method: 'POST' });
         const data = await response.json();
-        
+
         // Отримали код кімнати - відразу заходимо в неї
         enterRoom(data.roomCode);
     } catch (error) {
@@ -28,7 +28,7 @@ function joinRoomFromInput() {
 
 async function enterRoom(roomCode) {
     currentRoomCode = roomCode;
-    
+
     // Перемикаємо екрани
     document.getElementById('landing-page').classList.add('hidden');
     document.getElementById('chat-page').classList.remove('hidden');
@@ -57,7 +57,7 @@ async function loadHistory() {
     try {
         const response = await fetch(`/api/v1/rooms/${currentRoomCode}/messages`);
         if (!response.ok) throw new Error('Кімнати не існує');
-        
+
         const messages = await response.json();
         messages.forEach(msg => showMessage(msg.content, msg.timestamp));
     } catch (error) {
@@ -73,11 +73,15 @@ async function loadHistory() {
 
 function connectWebSocket() {
     // Вказуємо адресу нашого WebSocket (з ChatController)
-    const socket = new WebSocket('ws://' + window.location.host + '/ws');
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = window.location.host;
+
+    // Формуємо правильну адресу
+    const socket = new WebSocket(protocol + '//' + host + '/ws');
     stompClient = Stomp.over(socket);
 
     // Вимикаємо зайві логи в консолі
-    stompClient.debug = null; 
+    stompClient.debug = null;
 
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
@@ -98,7 +102,7 @@ function sendMessage() {
         // Відправляємо повідомлення на сервер через STOMP
         const request = { content: content };
         stompClient.send(`/app/room/${currentRoomCode}/send`, {}, JSON.stringify(request));
-        
+
         input.value = ''; // Очищуємо поле вводу
     }
 }
@@ -116,17 +120,17 @@ function showMessage(content, timestamp) {
     const chatBox = document.getElementById('chat-box');
     const messageElement = document.createElement('div');
     messageElement.classList.add('message');
-    
+
     // Форматуємо час
     const date = new Date(timestamp);
-    const timeString = date.getHours().toString().padStart(2, '0') + ':' + 
-                       date.getMinutes().toString().padStart(2, '0');
+    const timeString = date.getHours().toString().padStart(2, '0') + ':' +
+        date.getMinutes().toString().padStart(2, '0');
 
     messageElement.innerHTML = `
         <span class="text">${content}</span>
         <span class="time">${timeString}</span>
     `;
-    
+
     chatBox.appendChild(messageElement);
     // Автоматично скролимо вниз до найновішого повідомлення
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -139,7 +143,7 @@ function showMessage(content, timestamp) {
 async function uploadFile() {
     const fileInput = document.getElementById('file-input');
     const file = fileInput.files[0];
-    
+
     if (!file) return;
 
     // Створюємо форму для відправки файлу
@@ -156,10 +160,10 @@ async function uploadFile() {
         if (!response.ok) throw new Error('Помилка завантаження');
 
         const data = await response.json();
-        
+
         // Коли файл завантажено, відправляємо в чат повідомлення з посиланням на нього
         const fileMessage = `📁 [ФАЙЛ] <a href="${data.fileUrl}" target="_blank" style="color: #ffff00;">${data.originalName}</a>`;
-        
+
         // Відправляємо через веб-сокет
         if (stompClient) {
             const request = { content: fileMessage };
