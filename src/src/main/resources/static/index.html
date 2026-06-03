@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +8,18 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
+
 <body>
 
     <div class="container">
         <div id="landing-page">
             <h1>CopyCat 🐱</h1>
             <p>Твій буфер обміну між девайсами</p>
-            
+
             <button class="btn primary" onclick="createRoom()">Створити нову кімнату</button>
-            
+
             <div class="divider">або</div>
-            
+
             <div class="join-section">
                 <input type="text" id="room-code-input" placeholder="Код кімнати (напр. a1b2c3d4)" maxlength="8">
                 <button class="btn secondary" onclick="joinRoomFromInput()">Приєднатися</button>
@@ -29,16 +31,21 @@
                 <h2>Кімната: <span id="room-id-display"></span></h2>
                 <button class="btn secondary small" onclick="leaveRoom()">Вийти</button>
             </div>
-            
+
             <div id="chat-box" class="chat-box"></div>
-            
+
             <div class="input-area">
-                <input type="text" id="message-input" placeholder="Напишіть повідомлення..." onkeypress="handleEnter(event)">
-                <button class="btn primary" onclick="sendMessage()">Відправити</button>
+                <input type="text" id="message-input" placeholder="Напишіть повідомлення..."
+                    onkeypress="handleEnter(event)">
+                <button class="btn primary" onclick="sendMessage()">SEND</button>
+
+                <input type="file" id="file-input" class="hidden" onchange="uploadFile()">
+                <button class="btn secondary small" onclick="document.getElementById('file-input').click()">[FILE]</button>
             </div>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
+
 </html>

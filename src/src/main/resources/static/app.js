@@ -131,3 +131,44 @@ function showMessage(content, timestamp) {
     // Автоматично скролимо вниз до найновішого повідомлення
     chatBox.scrollTop = chatBox.scrollHeight;
 }
+
+// ==========================================
+// 5. РОБОТА З ФАЙЛАМИ
+// ==========================================
+
+async function uploadFile() {
+    const fileInput = document.getElementById('file-input');
+    const file = fileInput.files[0];
+    
+    if (!file) return;
+
+    // Створюємо форму для відправки файлу
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        // Відправляємо файл на наш новий ендпоінт
+        const response = await fetch('/api/v1/files/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) throw new Error('Помилка завантаження');
+
+        const data = await response.json();
+        
+        // Коли файл завантажено, відправляємо в чат повідомлення з посиланням на нього
+        const fileMessage = `📁 [ФАЙЛ] <a href="${data.fileUrl}" target="_blank" style="color: #ffff00;">${data.originalName}</a>`;
+        
+        // Відправляємо через веб-сокет
+        if (stompClient) {
+            const request = { content: fileMessage };
+            stompClient.send(`/app/room/${currentRoomCode}/send`, {}, JSON.stringify(request));
+        }
+
+        fileInput.value = ''; // Очищуємо інпут
+    } catch (error) {
+        console.error(error);
+        alert('Помилка при завантаженні файлу. Можливо він завеликий?');
+    }
+}
