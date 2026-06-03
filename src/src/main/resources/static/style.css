@@ -1,0 +1,35 @@
+* { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+
+.container { background: white; width: 100%; max-width: 450px; height: 80vh; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
+.hidden { display: none !important; }
+
+/* Landing Page */
+#landing-page { padding: 40px 20px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+h1 { color: #1a73e8; margin-bottom: 5px; }
+.divider { margin: 20px 0; color: #888; font-size: 14px; position: relative; }
+
+/* Buttons & Inputs */
+.btn { padding: 12px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 16px; width: 100%; }
+.btn.primary { background: #1a73e8; color: white; }
+.btn.primary:hover { background: #1557b0; }
+.btn.secondary { background: #e8f0fe; color: #1a73e8; }
+.btn.secondary:hover { background: #d2e3fc; }
+.btn.small { padding: 6px 12px; font-size: 14px; width: auto; }
+
+input[type="text"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; outline: none; }
+input[type="text"]:focus { border-color: #1a73e8; }
+
+/* Chat Page */
+#chat-page { display: flex; flex-direction: column; height: 100%; }
+.chat-header { background: #1a73e8; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+.chat-header h2 { margin: 0; font-size: 18px; font-weight: normal; }
+.chat-header .btn { background: rgba(255,255,255,0.2); color: white; }
+
+.chat-box { flex: 1; padding: 20px; overflow-y: auto; background: #e5ddd5; display: flex; flex-direction: column; gap: 10px; }
+.message { background: white; padding: 10px 15px; border-radius: 15px; max-width: 85%; align-self: flex-start; box-shadow: 0 1px 1px rgba(0,0,0,0.1); position: relative; padding-right: 50px; word-wrap: break-word;}
+.message .time { position: absolute; bottom: 5px; right: 10px; font-size: 11px; color: #888; }
+
+.input-area { display: flex; padding: 15px; background: #f0f0f0; gap: 10px; }
+.input-area input { margin: 0; border-radius: 20px; }
+.input-area .btn { width: auto; border-radius: 20px; }
