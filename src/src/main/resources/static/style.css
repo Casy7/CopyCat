@@ -1,35 +1,200 @@
-* { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background-color: #f0f2f5; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+* { 
+    box-sizing: border-box; 
+    /* Моноширинний шрифт для стилістики консолі */
+    font-family: 'Courier New', Courier, monospace; 
+    /* ПОВНЕ видалення закруглень всюди */
+    border-radius: 0 !important; 
+}
 
-.container { background: white; width: 100%; max-width: 450px; height: 80vh; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
+body { 
+    background-color: #000000; /* Абсолютно чорний бекграунд */
+    color: #ffffff; /* Білий колір для основного тексту */
+    margin: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+}
+
+/* Контейнер додатка з жовтим контуром */
+.container { 
+    background: #050505; 
+    width: 100%; 
+    max-width: 450px; 
+    height: 80vh; 
+    border: 2px solid #ffff00; /* Жовта лінія */
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column; 
+}
+
 .hidden { display: none !important; }
 
-/* Landing Page */
-#landing-page { padding: 40px 20px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; }
-h1 { color: #1a73e8; margin-bottom: 5px; }
-.divider { margin: 20px 0; color: #888; font-size: 14px; position: relative; }
+/* ==========================================
+   ГОЛОВНИЙ ЕКРАН (LANDING)
+   ========================================== */
+#landing-page { 
+    padding: 40px 20px; 
+    text-align: center; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+}
 
-/* Buttons & Inputs */
-.btn { padding: 12px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 16px; width: 100%; }
-.btn.primary { background: #1a73e8; color: white; }
-.btn.primary:hover { background: #1557b0; }
-.btn.secondary { background: #e8f0fe; color: #1a73e8; }
-.btn.secondary:hover { background: #d2e3fc; }
-.btn.small { padding: 6px 12px; font-size: 14px; width: auto; }
+h1 { 
+    color: #ffff00; 
+    margin-bottom: 5px; 
+    text-transform: uppercase; 
+    letter-spacing: 3px;
+}
 
-input[type="text"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; outline: none; }
-input[type="text"]:focus { border-color: #1a73e8; }
+#landing-page p {
+    color: #888888;
+    font-size: 14px;
+    margin-bottom: 30px;
+    text-transform: lowercase;
+}
 
-/* Chat Page */
-#chat-page { display: flex; flex-direction: column; height: 100%; }
-.chat-header { background: #1a73e8; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-.chat-header h2 { margin: 0; font-size: 18px; font-weight: normal; }
-.chat-header .btn { background: rgba(255,255,255,0.2); color: white; }
+.divider { 
+    margin: 25px 0; 
+    color: #ffff00; 
+    font-size: 12px; 
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
 
-.chat-box { flex: 1; padding: 20px; overflow-y: auto; background: #e5ddd5; display: flex; flex-direction: column; gap: 10px; }
-.message { background: white; padding: 10px 15px; border-radius: 15px; max-width: 85%; align-self: flex-start; box-shadow: 0 1px 1px rgba(0,0,0,0.1); position: relative; padding-right: 50px; word-wrap: break-word;}
-.message .time { position: absolute; bottom: 5px; right: 10px; font-size: 11px; color: #888; }
+/* ==========================================
+   КНОПКИ ТА ПОЛЯ ВВОДУ
+   ========================================== */
+.btn { 
+    padding: 12px 20px; 
+    border: 1px solid #ffff00; 
+    background: transparent; 
+    color: #ffff00; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: background 0.1s ease, color 0.1s ease; 
+    font-size: 14px; 
+    width: 100%; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-.input-area { display: flex; padding: 15px; background: #f0f0f0; gap: 10px; }
-.input-area input { margin: 0; border-radius: 20px; }
-.input-area .btn { width: auto; border-radius: 20px; }
+/* Ефект інверсії при наведенні курсору */
+.btn:hover { 
+    background: #ffff00; 
+    color: #000000; 
+}
+
+.btn.small { 
+    padding: 6px 12px; 
+    font-size: 12px; 
+    width: auto; 
+}
+
+input[type="text"] { 
+    width: 100%; 
+    padding: 12px; 
+    margin-bottom: 15px; 
+    border: 1px solid #ffff00; 
+    background: #000000; 
+    color: #ffffff; 
+    font-size: 14px; 
+    outline: none; 
+}
+
+/* Фокус на інпуті робить лінію товстішою */
+input[type="text"]:focus { 
+    border: 1px solid #ffff00;
+    box-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+    color: #ffff00;
+}
+
+/* ==========================================
+   ЕКРАН ЧАТУ
+   ========================================== */
+#chat-page { 
+    display: flex; 
+    flex-direction: column; 
+    height: 100%; 
+}
+
+.chat-header { 
+    background: #0a0a0a; 
+    color: #ffff00; 
+    padding: 15px 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 2px solid #ffff00;
+}
+
+.chat-header h2 { 
+    margin: 0; 
+    font-size: 16px; 
+    font-weight: bold; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Зона повідомлень — чистий чорний колір */
+.chat-box { 
+    flex: 1; 
+    padding: 20px; 
+    overflow-y: auto; 
+    background: #000000; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+}
+
+/* Стиль консольного рядка для повідомлень */
+.message { 
+    background: #0a0a0a; 
+    border: 1px solid #ffff00;
+    color: #ffffff;
+    padding: 10px 15px; 
+    max-width: 90%; 
+    align-self: flex-start; 
+    position: relative; 
+    padding-right: 60px; 
+    word-wrap: break-word;
+}
+
+.message .time { 
+    position: absolute; 
+    bottom: 4px; 
+    right: 8px; 
+    font-size: 10px; 
+    color: #ffff00; 
+    opacity: 0.6; 
+}
+
+/* Нижня панель вводу */
+.input-area { 
+    display: flex; 
+    padding: 15px; 
+    background: #0a0a0a; 
+    gap: 10px; 
+    border-top: 2px solid #ffff00;
+}
+
+.input-area input { 
+    margin: 0; 
+}
+
+.input-area .btn { 
+    width: auto; 
+}
+
+/* Кастомізація скроллбару під стиль консолі */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #000000;
+}
+::-webkit-scrollbar-thumb {
+    background: #ffff00;
+}
