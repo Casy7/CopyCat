@@ -1,35 +1,35 @@
 # ==========================================
-# ЕТАП 1: Збірка (Builder)
+# STAGE 1: Build (Builder)
 # ==========================================
-# Беремо образ з Maven та Java 17 (якщо в тебе Java 21 - зміни 17 на 21)
+# Use Maven image with Java 21 (Temurin)
 FROM maven:3.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# Копіюємо файл залежностей
+# Copy the dependency file
 COPY pom.xml .
-# Завантажуємо всі бібліотеки (це кешується, щоб наступні збірки були швидшими)
+# Download all libraries (cached to speed up subsequent builds)
 RUN mvn dependency:go-offline
 
-# Копіюємо весь наш вихідний код
+# Copy all source code
 COPY src ./src
-# Збираємо проєкт у .jar файл (тести пропускаємо для швидкості)
+# Build the project into a .jar file (skipping tests for speed)
 RUN mvn clean package -DskipTests
 
 # ==========================================
-# ЕТАП 2: Запуск (Runner)
+# STAGE 2: Run (Runner)
 # ==========================================
-# Беремо дуже легкий образ Alpine Linux тільки з JRE (без Maven)
+# Use a lightweight Alpine Linux image with JRE (no Maven)
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Створюємо папку для завантажених файлів
+# Create a folder for uploaded files
 RUN mkdir uploads
 
-# Копіюємо зібраний .jar файл з першого етапу
+# Copy the built .jar file from the builder stage
 COPY --from=builder /app/target/*.jar app.jar
 
-# Відкриваємо порт 8080 для світу
+# Expose port 8080 to the world
 EXPOSE 8080
 
-# Команда, яка запускає сервер
+# Command that starts the server
 ENTRYPOINT ["java", "-jar", "app.jar"]

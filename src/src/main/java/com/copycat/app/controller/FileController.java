@@ -23,18 +23,17 @@ public class FileController {
 
     // Upload file to the server
     @PostMapping("/upload")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED) // Змінюємо на 201
     public Map<String, String> uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = fileService.storeFile(file);
-        
+
         // Generate download URL
         String fileDownloadUri = "/api/v1/files/download/" + fileName;
-        
+
         // Return the file link and its original name to the client
         return Map.of(
-            "fileUrl", fileDownloadUri,
-            "originalName", file.getOriginalFilename() != null ? file.getOriginalFilename() : "file"
-        );
+                "fileUrl", fileDownloadUri,
+                "originalName", file.getOriginalFilename() != null ? file.getOriginalFilename() : "file");
     }
 
     // File download
