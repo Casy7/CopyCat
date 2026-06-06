@@ -8,9 +8,9 @@ public interface RoomService {
     RoomResponse createRoom();
     void validateRoomExists(String roomCode);
     
-    // Новий метод для збереження повідомлення
+    // New method for saving a message
     void addMessageToRoom(String roomCode, String content);
     
-    // Новий метод для отримання історії
+    // New method for getting history
     List<MessageResponse> getRoomMessages(String roomCode);
 }

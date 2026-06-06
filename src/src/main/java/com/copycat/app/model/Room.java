@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Room {
     private String roomCode;
-    // Список для збереження історії повідомлень у цій кімнаті
+    // List to store the history of messages in this room
     private List<Message> messages;
 
     public Room(String roomCode) {
         this.roomCode = roomCode;
-        this.messages = new ArrayList<>(); // Ініціалізуємо порожній список при створенні
+        this.messages = new ArrayList<>(); // Initialize an empty list on creation
     }
 
     public String getRoomCode() {
@@ -21,7 +21,7 @@ public class Room {
         return messages;
     }
 
-    // Зручний метод для додавання одного повідомлення
+    // Helper method to add a single message
     public void addMessage(Message message) {
         this.messages.add(message);
     }

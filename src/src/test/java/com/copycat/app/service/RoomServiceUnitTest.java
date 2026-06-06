@@ -21,31 +21,31 @@ import static org.mockito.Mockito.*;
 class RoomServiceUnitTest {
 
     @Mock
-    private InMemoryRoomRepository roomRepository; // Робимо "фейковий" репозиторій
+    private InMemoryRoomRepository roomRepository; // Create a "fake" repository
 
     @InjectMocks
-    private RoomServiceImpl roomService; // Впроваджуємо фейковий репо в реальний сервіс
+    private RoomServiceImpl roomService; // Inject the fake repo into the real service
 
     @Test
     void createRoom_ShouldGenerateCodeAndSave() {
-        // Дія: викликаємо метод створення
+        // Action: call the create method
         RoomResponse response = roomService.createRoom();
 
-        // Перевірка: код не порожній і має 8 символів
+        // Verification: code is not empty and has 8 characters
         assertNotNull(response);
         assertEquals(8, response.roomCode().length());
         
-        // Перевірка: метод save() у репозиторії був викликаний рівно 1 раз
+        // Verification: save() method in the repository was called exactly once
         verify(roomRepository, times(1)).save(any(Room.class));
     }
 
     @Test
     void validateRoomExists_ShouldThrowException_WhenRoomNotFound() {
         String invalidCode = "error123";
-        // Налаштовуємо мок: коли шукають цей код, повертаємо порожнечу
+        // Set up mock: return empty when searching for this code
         when(roomRepository.findByCode(invalidCode)).thenReturn(Optional.empty());
 
-        // Перевірка: чи дійсно викидається наша кастомна помилка
+        // Verification: check if our custom exception is actually thrown
         assertThrows(RoomNotFoundException.class, () -> {
             roomService.validateRoomExists(invalidCode);
         });

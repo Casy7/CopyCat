@@ -15,12 +15,12 @@ import java.util.UUID;
 @Service
 public class FileService {
 
-    // Папка, де будуть лежати файли
+    // Folder where files will be stored
     private final Path fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
 
     public FileService() {
         try {
-            // Створюємо папку при старті сервера, якщо її ще немає
+            // Create the folder on server start if it doesn't exist yet
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
             throw new RuntimeException("Не вдалося створити директорію для файлів.", ex);
@@ -29,15 +29,15 @@ public class FileService {
 
     public String storeFile(MultipartFile file) {
         try {
-            // Генеруємо унікальне ім'я: 123e4567-e89b-12d3..._myphoto.jpg
+            // Generate a unique name: 123e4567-e89b-12d3..._myphoto.jpg
             String originalName = file.getOriginalFilename();
             String fileName = UUID.randomUUID().toString() + "_" + originalName;
 
-            // Копіюємо файл на диск
+            // Copy file to disk
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return fileName; // Повертаємо нове ім'я файлу
+            return fileName; // Return the new file name
         } catch (IOException ex) {
             throw new RuntimeException("Не вдалося зберегти файл", ex);
         }

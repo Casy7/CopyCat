@@ -20,18 +20,18 @@ public class ChatController {
         this.roomService = roomService;
     }
 
-    // Клієнт відправляє повідомлення на: /app/room/{roomCode}/send
+    // Client sends a message to: /app/room/{roomCode}/send
     @MessageMapping("/room/{roomCode}/send")
-    // Сервер бере результат методу і автоматично розсилає всім, хто слухає: /topic/room/{roomCode}
+    // Server takes the method result and automatically broadcasts to everyone listening: /topic/room/{roomCode}
     @SendTo("/topic/room/{roomCode}")
     public MessageResponse sendMessage(
             @DestinationVariable String roomCode, 
             @Payload SendMessageRequest request) {
         
-        // 1. Зберігаємо повідомлення в пам'ять (щоб воно не зникло при оновленні сторінки)
+        // 1. Save the message to memory (so it doesn't disappear when the page is refreshed)
         roomService.addMessageToRoom(roomCode, request.content());
         
-        // 2. Повертаємо об'єкт (Spring сам перетворить його на JSON і відправить підписникам)
+        // 2. Return the object (Spring will automatically convert it to JSON and send it to subscribers)
         return new MessageResponse(request.content(), LocalDateTime.now());
     }
 }

@@ -17,14 +17,14 @@ public class RoomServiceImpl implements RoomService {
 
     private final InMemoryRoomRepository roomRepository;
 
-    // Constructor Injection (без @Autowired)
+    // Constructor Injection (without @Autowired)
     public RoomServiceImpl(InMemoryRoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
     @Override
     public RoomResponse createRoom() {
-        // Логіка генерації унікального коду з 8 символів
+        // Logic for generating a unique 8-character code
         String code = UUID.randomUUID().toString().substring(0, 8);
         Room room = new Room(code);
         roomRepository.save(room);
@@ -40,11 +40,11 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void addMessageToRoom(String roomCode, String content) {
-        // Знаходимо кімнату або кидаємо помилку
+        // Find the room or throw an error
         Room room = roomRepository.findByCode(roomCode)
             .orElseThrow(() -> new RoomNotFoundException("Кімнату з кодом " + roomCode + " не знайдено"));
         
-        // Додаємо повідомлення
+        // Add the message
         room.addMessage(new Message(content));
     }
 
@@ -53,7 +53,7 @@ public class RoomServiceImpl implements RoomService {
         Room room = roomRepository.findByCode(roomCode)
             .orElseThrow(() -> new RoomNotFoundException("Кімнату з кодом " + roomCode + " не знайдено"));
         
-        // Перетворюємо внутрішні Message на MessageResponse за допомогою Stream API
+        // Convert internal Message objects to MessageResponse using Stream API
         return room.getMessages().stream()
             .map(msg -> new MessageResponse(msg.getContent(), msg.getTimestamp()))
             .toList();

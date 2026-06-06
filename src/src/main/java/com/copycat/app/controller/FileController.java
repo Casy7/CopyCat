@@ -21,28 +21,28 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    // Завантаження файлу на сервер
+    // Upload file to the server
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, String> uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = fileService.storeFile(file);
         
-        // Генеруємо URL для завантаження
+        // Generate download URL
         String fileDownloadUri = "/api/v1/files/download/" + fileName;
         
-        // Повертаємо клієнту лінк на файл та його оригінальне ім'я
+        // Return the file link and its original name to the client
         return Map.of(
             "fileUrl", fileDownloadUri,
             "originalName", file.getOriginalFilename() != null ? file.getOriginalFilename() : "file"
         );
     }
 
-    // Скачування файлу
+    // File download
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
         Resource resource = fileService.loadFileAsResource(fileName);
 
-        // Кажемо браузеру, що це файл, який треба скачати (або відкрити)
+        // Tell the browser that this is a file that needs to be downloaded (or opened)
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")

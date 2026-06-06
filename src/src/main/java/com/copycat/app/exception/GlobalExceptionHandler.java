@@ -15,14 +15,14 @@ import java.util.Map;
 @RestController
 public class GlobalExceptionHandler {
 
-    // Обробка нашої кастомної помилки
+    // Handling our custom error
     @ExceptionHandler(RoomNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleRoomNotFound(RoomNotFoundException ex) {
         return Map.of("error", ex.getMessage());
     }
 
-    // Обробка помилок валідації (@Valid)
+    // Handling validation errors (@Valid)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {

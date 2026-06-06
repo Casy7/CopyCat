@@ -8,7 +8,7 @@ public class Message {
 
     public Message(String content) {
         this.content = content;
-        this.timestamp = LocalDateTime.now(); // Автоматично фіксуємо час створення
+        this.timestamp = LocalDateTime.now(); // Automatically record creation time
     }
 
     public String getContent() {

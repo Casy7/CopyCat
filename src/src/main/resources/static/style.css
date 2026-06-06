@@ -1,14 +1,14 @@
 * { 
     box-sizing: border-box; 
-    /* Моноширинний шрифт для стилістики консолі */
+    /* Monospaced font for console aesthetics */
     font-family: 'Courier New', Courier, monospace; 
-    /* ПОВНЕ видалення закруглень всюди */
+    /* COMPLETE removal of rounding everywhere */
     border-radius: 0 !important; 
 }
 
 body { 
-    background-color: #000000; /* Абсолютно чорний бекграунд */
-    color: #ffffff; /* Білий колір для основного тексту */
+    background-color: #000000; /* Absolutely black background */
+    color: #ffffff; /* White color for main text */
     margin: 0; 
     display: flex; 
     justify-content: center; 
@@ -16,13 +16,13 @@ body {
     height: 100vh; 
 }
 
-/* Контейнер додатка з жовтим контуром */
+/* App container with a yellow outline */
 .container { 
     background: #050505; 
     width: 100%; 
     max-width: 450px; 
     height: 80vh; 
-    border: 2px solid #ffff00; /* Жовта лінія */
+    border: 2px solid #ffff00; /* Yellow line */
     overflow: hidden; 
     display: flex; 
     flex-direction: column; 
@@ -31,7 +31,7 @@ body {
 .hidden { display: none !important; }
 
 /* ==========================================
-   ГОЛОВНИЙ ЕКРАН (LANDING)
+   MAIN SCREEN (LANDING)
    ========================================== */
 #landing-page { 
     padding: 40px 20px; 
@@ -65,7 +65,7 @@ h1 {
 }
 
 /* ==========================================
-   КНОПКИ ТА ПОЛЯ ВВОДУ
+   BUTTONS AND INPUT FIELDS
    ========================================== */
 .btn { 
     padding: 12px 20px; 
@@ -81,7 +81,7 @@ h1 {
     letter-spacing: 1px;
 }
 
-/* Ефект інверсії при наведенні курсору */
+/* Inversion effect on hover */
 .btn:hover { 
     background: #ffff00; 
     color: #000000; 
@@ -104,7 +104,7 @@ input[type="text"] {
     outline: none; 
 }
 
-/* Фокус на інпуті робить лінію товстішою */
+/* Focusing on input makes the line thicker */
 input[type="text"]:focus { 
     border: 1px solid #ffff00;
     box-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
@@ -112,7 +112,7 @@ input[type="text"]:focus {
 }
 
 /* ==========================================
-   ЕКРАН ЧАТУ
+   CHAT SCREEN
    ========================================== */
 #chat-page { 
     display: flex; 
@@ -138,7 +138,7 @@ input[type="text"]:focus {
     letter-spacing: 1px;
 }
 
-/* Зона повідомлень — чистий чорний колір */
+/* Message area — pure black */
 .chat-box { 
     flex: 1; 
     padding: 20px; 
@@ -149,7 +149,7 @@ input[type="text"]:focus {
     gap: 12px; 
 }
 
-/* Стиль консольного рядка для повідомлень */
+/* Console line style for messages */
 .message { 
     background: #0a0a0a; 
     border: 1px solid #ffff00;
@@ -171,7 +171,7 @@ input[type="text"]:focus {
     opacity: 0.6; 
 }
 
-/* Нижня панель вводу */
+/* Bottom input panel */
 .input-area { 
     display: flex; 
     padding: 15px; 
@@ -188,7 +188,7 @@ input[type="text"]:focus {
     width: auto; 
 }
 
-/* Кастомізація скроллбару під стиль консолі */
+/* Customizing the scrollbar to match the console style */
 ::-webkit-scrollbar {
     width: 6px;
 }

@@ -2,16 +2,16 @@ let stompClient = null;
 let currentRoomCode = null;
 
 // ==========================================
-// 1. НАВІГАЦІЯ ТА СТВОРЕННЯ КІМНАТ
+// 1. NAVIGATION AND ROOM CREATION
 // ==========================================
 
 async function createRoom() {
     try {
-        // Робимо POST запит на наш бекенд
+        // Make a POST request to our backend
         const response = await fetch('/api/v1/rooms', { method: 'POST' });
         const data = await response.json();
 
-        // Отримали код кімнати - відразу заходимо в неї
+        // Got the room code - entering it immediately
         enterRoom(data.roomCode);
     } catch (error) {
         console.error('Помилка створення кімнати:', error);
@@ -29,13 +29,13 @@ function joinRoomFromInput() {
 async function enterRoom(roomCode) {
     currentRoomCode = roomCode;
 
-    // Перемикаємо екрани
+    // Switch screens
     document.getElementById('landing-page').classList.add('hidden');
     document.getElementById('chat-page').classList.remove('hidden');
     document.getElementById('room-id-display').innerText = roomCode;
-    document.getElementById('chat-box').innerHTML = ''; // Очищуємо чат
+    document.getElementById('chat-box').innerHTML = ''; // Clear chat
 
-    // Завантажуємо старі повідомлення та підключаємось до сокету
+    // Load old messages and connect to the socket
     await loadHistory();
     connectWebSocket();
 }
@@ -50,7 +50,7 @@ function leaveRoom() {
 }
 
 // ==========================================
-// 2. ЗАВАНТАЖЕННЯ ІСТОРІЇ (REST API)
+// 2. LOADING HISTORY (REST API)
 // ==========================================
 
 async function loadHistory() {
@@ -68,26 +68,26 @@ async function loadHistory() {
 }
 
 // ==========================================
-// 3. WEBSOCKET (МАГІЯ РЕАЛЬНОГО ЧАСУ)
+// 3. WEBSOCKET (REAL-TIME MAGIC)
 // ==========================================
 
 function connectWebSocket() {
-    // Вказуємо адресу нашого WebSocket (з ChatController)
+    // Specify our WebSocket address (from ChatController)
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = window.location.host;
 
-    // Формуємо правильну адресу
+    // Form the correct address
     const socket = new WebSocket(protocol + '//' + host + '/ws');
     stompClient = Stomp.over(socket);
 
-    // Вимикаємо зайві логи в консолі
+    // Disable unnecessary console logs
     stompClient.debug = null;
 
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        // Підписуємось на канал нашої кімнати
+        // Subscribe to our room's channel
         stompClient.subscribe('/topic/room/' + currentRoomCode, function (messageOutput) {
-            // Коли хтось кидає повідомлення, ми його отримуємо тут
+            // When someone sends a message, we receive it here
             const msg = JSON.parse(messageOutput.body);
             showMessage(msg.content, msg.timestamp);
         });
@@ -99,21 +99,21 @@ function sendMessage() {
     const content = input.value.trim();
 
     if (content && stompClient) {
-        // Відправляємо повідомлення на сервер через STOMP
+        // Send a message to the server via STOMP
         const request = { content: content };
         stompClient.send(`/app/room/${currentRoomCode}/send`, {}, JSON.stringify(request));
 
-        input.value = ''; // Очищуємо поле вводу
+        input.value = ''; // Clear input field
     }
 }
 
-// Обробка натискання Enter
+// Handle Enter key press
 function handleEnter(event) {
     if (event.key === 'Enter') sendMessage();
 }
 
 // ==========================================
-// 4. ВІДОБРАЖЕННЯ НА ЕКРАНІ
+// 4. ON-SCREEN DISPLAY
 // ==========================================
 
 function showMessage(content, timestamp) {
@@ -121,7 +121,7 @@ function showMessage(content, timestamp) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message');
 
-    // Форматуємо час
+    // Format time
     const date = new Date(timestamp);
     const timeString = date.getHours().toString().padStart(2, '0') + ':' +
         date.getMinutes().toString().padStart(2, '0');
@@ -132,12 +132,12 @@ function showMessage(content, timestamp) {
     `;
 
     chatBox.appendChild(messageElement);
-    // Автоматично скролимо вниз до найновішого повідомлення
+    // Automatically scroll down to the latest message
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 // ==========================================
-// 5. РОБОТА З ФАЙЛАМИ
+// 5. WORKING WITH FILES
 // ==========================================
 
 async function uploadFile() {
@@ -146,12 +146,12 @@ async function uploadFile() {
 
     if (!file) return;
 
-    // Створюємо форму для відправки файлу
+    // Create a form for file submission
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-        // Відправляємо файл на наш новий ендпоінт
+        // Send the file to our new endpoint
         const response = await fetch('/api/v1/files/upload', {
             method: 'POST',
             body: formData
@@ -161,16 +161,16 @@ async function uploadFile() {
 
         const data = await response.json();
 
-        // Коли файл завантажено, відправляємо в чат повідомлення з посиланням на нього
+        // Once the file is uploaded, send a message to the chat with a link to it
         const fileMessage = `📁 [ФАЙЛ] <a href="${data.fileUrl}" target="_blank" style="color: #ffff00;">${data.originalName}</a>`;
 
-        // Відправляємо через веб-сокет
+        // Send via WebSocket
         if (stompClient) {
             const request = { content: fileMessage };
             stompClient.send(`/app/room/${currentRoomCode}/send`, {}, JSON.stringify(request));
         }
 
-        fileInput.value = ''; // Очищуємо інпут
+        fileInput.value = ''; // Clear input
     } catch (error) {
         console.error(error);
         alert('Помилка при завантаженні файлу. Можливо він завеликий?');

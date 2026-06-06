@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class InMemoryRoomRepository {
-    // Ключ - roomCode, Значення - об'єкт Room
+    // Key - roomCode, Value - Room object
     private final ConcurrentHashMap<String, Room> roomStore = new ConcurrentHashMap<>();
 
     public Room save(Room room) {

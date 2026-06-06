@@ -15,25 +15,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RoomControllerIntegrationTest {
 
     @Autowired
-    private MockMvc mockMvc; // Інструмент для імітації HTTP запитів
+    private MockMvc mockMvc; // Tool for simulating HTTP requests
 
     @Test
     void createRoom_ShouldReturnStatusCreatedAndRoomCode() throws Exception {
         mockMvc.perform(post("/api/v1/rooms"))
-                .andExpect(status().isCreated()) // Очікуємо статус 201
-                .andExpect(jsonPath("$.roomCode").exists()) // Перевіряємо, що в JSON є поле roomCode
+                .andExpect(status().isCreated()) // Expect status 201
+                .andExpect(jsonPath("$.roomCode").exists()) // Check that the JSON has a roomCode field
                 .andExpect(jsonPath("$.roomCode").isString());
     }
 
     @Test
     void sendMessage_ShouldReturnBadRequest_WhenContentIsBlank() throws Exception {
-        // Формуємо JSON з порожнім повідомленням
+        // Create a JSON with an empty message
         String badRequestJson = "{\"content\": \"   \"}";
 
         mockMvc.perform(post("/api/v1/rooms/testCode/messages")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(badRequestJson))
-                .andExpect(status().isBadRequest()) // Очікуємо статус 400 (через @Valid)
-                .andExpect(jsonPath("$.content").exists()); // Перевіряємо, що повернулася помилка саме поля content
+                .andExpect(status().isBadRequest()) // Expect status 400 (due to @Valid)
+                .andExpect(jsonPath("$.content").exists()); // Check that an error for the content field was returned
     }
 }

@@ -28,16 +28,16 @@ public class RoomController {
         return roomService.createRoom();
     }
 
-    @PostMapping("/{roomCode}/messages")
-    @ResponseStatus(HttpStatus.OK)
+@PostMapping("/{roomCode}/messages")
+    @ResponseStatus(HttpStatus.CREATED) // Змінили OK на CREATED
     public void sendMessage(
-            @PathVariable String roomCode,
-            @Valid @RequestBody SendMessageRequest request) {
-
+            @PathVariable String roomCode, 
+            @Valid @RequestBody SendMessageRequest request) { 
+        
         roomService.addMessageToRoom(roomCode, request.content());
     }
 
-    // ОТРИМУЄМО історію повідомлень кімнати
+    // GET room message history
     @GetMapping("/{roomCode}/messages")
     @ResponseStatus(HttpStatus.OK)
     public List<MessageResponse> getMessages(@PathVariable String roomCode) {
